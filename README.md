@@ -120,29 +120,6 @@ Kubernetes увеличивает количество Pod. Когда нагр�
 количество экземпляров может быть уменьшено в пределах заданных
 ограничений.
 
-Пример конфигурации HPA:
-
-``` yaml
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: orders
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: orders
-  minReplicas: 2
-  maxReplicas: 10
-  metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 70
-```
-
 Для работы HPA необходим источник метрик, например Metrics Server.
 
 Если ресурсов на узлах кластера недостаточно для размещения новых Pod,
@@ -191,22 +168,6 @@ Kubernetes позволяет передавать настройки прило
 Для чувствительных данных используются **Secret**. В них можно хранить
 пароли, токены, ключи доступа и другие секреты. Контейнер получает
 необходимые значения через переменные среды или подключённые файлы.
-
-Пример использования ConfigMap и Secret в Deployment:
-
-``` yaml
-env:
-  - name: APP_MODE
-    valueFrom:
-      configMapKeyRef:
-        name: app-config
-        key: mode
-  - name: DB_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: db-secret
-        key: password
-```
 
 Для production-среды рекомендуется дополнительно использовать
 **HashiCorp Vault**. Он обеспечивает централизованное хранение секретов,
